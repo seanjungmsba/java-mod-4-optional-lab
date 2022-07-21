@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
@@ -6,12 +7,28 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
-        String bookName = scanner.nextLine();
-        Optional<String> optAuthor = Book.getAuthor(bookName);
+        System.out.println("================ Welcome to my library! ================");
 
-        // write your code here
+        try (Scanner scanner = new Scanner(System.in);) {
+
+            while (true) {
+                System.out.print("Enter the name of the book you want to search for: ");
+                String bookName = scanner.nextLine();
+                System.out.println();
+                Optional<String> optAuthor = Book.getAuthor(bookName);
+        
+                // write your code here
+                optAuthor.ifPresentOrElse(
+                        (value) -> System.out.println("bookName = '" + bookName + "'" + "\n\n'" + bookName + " written by " + value + "'"),
+                        () -> System.out.println("Unknown")
+                );
+                System.out.println("================================================");
+            }
+        } catch (InputMismatchException ioInputMismatchException) {
+            System.out.println("ERROR: Invalid Input");
+        }
+
     }
 }
 
